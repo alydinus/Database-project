@@ -1,0 +1,5 @@
+CREATE TABLE admins (
+    AdminID SERIAL PRIMARY KEY,
+    Username VARCHAR(50) UNIQUE NOT NULL,
+    Password VARCHAR(255) NOT NULL
+);
