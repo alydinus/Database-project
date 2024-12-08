@@ -1,7 +1,9 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-public class Controller implements ActionListener {
+public class Controller extends MouseAdapter implements ActionListener {
     private Viewer viewer;
     private Model model;
 
@@ -11,6 +13,19 @@ public class Controller implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        viewer.checkLogin();
+        if (e.getActionCommand().equals("login")) {
+            viewer.getLogin().checkLogin();
+        } else if (e.getActionCommand().equals("register")) {
+            viewer.getRegister().register();
+        }
+    }
+
+    public void mouseClicked(MouseEvent e) {
+        super.mouseClicked(e);
+        if (viewer.getLogin().isRegisterClicked(e)){
+            viewer.showRegister();
+        }
+
+
     }
 }

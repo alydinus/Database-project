@@ -1,15 +1,19 @@
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class Viewer {
-    private Login login;
+    private JPanel login;
     private Controller controller;
+    private JFrame frame;
+    private Register register;
 
     public Viewer() {
         controller = new Controller(this);
         login = new Login(this);
+        register = new Register(this);
 
 
-        JFrame frame = new JFrame("Book store management system");
+        frame = new JFrame("Book store management system");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
         frame.setLocationRelativeTo(null);
@@ -22,12 +26,18 @@ public class Viewer {
     }
 
     public Login getLogin() {
-        return login;
+        return (Login) login;
+    }
+    public Register getRegister() {
+        return register;
     }
     public Controller getController() {
         return controller;
     }
-    public void checkLogin() {
-        login.checkLogin();
+    public void showRegister() {
+        login.setVisible(false);
+        login.setFocusable(false);
+        register.setVisible(true);
+        frame.add(register);
     }
 }
