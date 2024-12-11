@@ -63,14 +63,19 @@ public class Login extends Frame {
     }
 
 
-    public void checkLogin() {
+    public boolean checkLogin() {
         String usernameText = username.getText();
         String passwordText = password.getText();
 
         try {
-            authentification(checkRole(), usernameText, passwordText);
+            if (authentification(checkRole(), usernameText, passwordText)){
+                return true;
+            } else {
+                return false;
+            }
         } catch (SQLException sqle) {
             System.err.println("Error: " + sqle);
+            return false;
         }
 
     }
@@ -79,23 +84,19 @@ public class Login extends Frame {
         return (String) comboBox.getSelectedItem();
     }
 
-    private void authentification(String role, String usernameInput, String passwordInput) throws SQLException {
+    private boolean authentification(String role, String usernameInput, String passwordInput) throws SQLException {
         String query = "SELECT * FROM " + role + " WHERE username = ? AND password = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1, usernameInput);
         preparedStatement.setString(2, passwordInput);
         ResultSet resultSet = preparedStatement.executeQuery();
-        if (resultSet.next()) {
-
-            String username = resultSet.getString("username");
-            String password = resultSet.getString("password");
-
-            if (username.equals(usernameInput) && password.equals(passwordInput)) {
-                JOptionPane.showMessageDialog(this, "Correct username and password");
-            }
+        if (!resultSet.next()) {
+            JOptionPane.showMessageDialog(null, "Invalid username or password");
+            return false;
         } else {
-            System.out.println("Invalid username or password");
+            return true;
         }
+
     }
 
     public boolean isRegisterClicked(MouseEvent event) {

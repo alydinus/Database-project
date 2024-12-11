@@ -63,9 +63,24 @@ public class Controller extends MouseAdapter implements ActionListener {
         }
 
         if (e.getActionCommand().equals("login")) {
-            viewer.getLogin().checkLogin();
+            if (viewer.getLogin().checkLogin()) {
+                viewer.showAdminPanel();
+            }
         } else if (e.getActionCommand().equals("register")) {
             viewer.getRegister().register();
+        } else if (e.getActionCommand().equals("confirmAdmin")) {
+            viewer.getAdmin().executeOptions();
+        } else if (e.getActionCommand().equals("createAdmin")) {
+            model.createAdmin(viewer.getAdmin().getAdminName(), viewer.getAdmin().getAdminPassword());
+            viewer.getAdmin().confirmButton.setActionCommand("confirmAdmin");
+        } else if (e.getActionCommand().equals("updateAdmin")) {
+            model.updateAdmin(viewer.getAdmin().getAdminName(), viewer.getAdmin().getAdminPassword());
+            viewer.getAdmin().confirmButton.setActionCommand("confirmAdmin");
+        } else if (e.getActionCommand().equals("readAdmin")) {
+
+        } else if (e.getActionCommand().equals("deleteAdmin")) {
+            model.deleteAdmin(viewer.getAdmin().getAdminName(), viewer.getAdmin().getAdminPassword());
+            viewer.getAdmin().confirmButton.setActionCommand("confirmAdmin");
         }
 
     }
@@ -77,6 +92,9 @@ public class Controller extends MouseAdapter implements ActionListener {
         }
 
 
+    }
+    public Model getModel() {
+        return model;
     }
 
 

@@ -1,5 +1,7 @@
 import dao.*;
 
+import java.util.List;
+
 public class Model {
     private Viewer viewer;
     private BookDAO bookDao;
@@ -7,6 +9,7 @@ public class Model {
     private CustomerDAO customerDAO;
     private OrderDAO orderDAO;
     private OrderItemsDAO orderItemsDAO;
+    private AdminDAO adminDAO;
     public Model(Viewer viewer) {
         this.viewer = viewer;
         this.bookDao = new BookDAO();
@@ -14,6 +17,7 @@ public class Model {
         this.customerDAO = new CustomerDAO();
         this.orderDAO = new OrderDAO();
         this.orderItemsDAO = new OrderItemsDAO();
+        this.adminDAO = new AdminDAO();
     }
 
     public void createBook(String isbn, String title, int publicationYear, double price) {
@@ -92,6 +96,22 @@ public class Model {
 
     public void readOrderItems(int orderId) {
         orderItemsDAO.readOrderItems(orderId);
+    }
+
+    public void createAdmin(String username, String password) {
+        adminDAO.create(username, password);
+    }
+
+    public void updateAdmin(String username, String password) {
+        adminDAO.update(username, password);
+    }
+
+    public void deleteAdmin(String username, String password) {
+        adminDAO.delete(username, password);
+    }
+
+    public List<String> readAdmin() {
+        return adminDAO.read();
     }
 
 

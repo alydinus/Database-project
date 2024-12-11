@@ -2,7 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Viewer {
+    private Model model;
     private JPanel login;
+    private Admin admin;
     private Controller controller;
     private JFrame frame;
     private Register register;
@@ -25,8 +27,10 @@ public class Viewer {
 
     public Viewer() {
         controller = new Controller(this);
+        model = controller.getModel();
         login = new Login(this);
         register = new Register(this);
+        admin = new Admin(this, model);
 
         // Initializing the fields
         bookIsbnField = new JTextField(20);
@@ -59,10 +63,13 @@ public class Viewer {
         return register;
     }
 
+    public Admin getAdmin() {
+        return admin;
+    }
+
     public Controller getController() {
         return controller;
     }
-
     public void showRegister() {
         login.setVisible(false);
         login.setFocusable(false);
@@ -70,7 +77,14 @@ public class Viewer {
         frame.add(register);
     }
 
+    public void showAdminPanel() {
+        admin = new Admin(this, model);
+        login.setVisible(false);
+        login.setFocusable(false);
+        frame.add(admin);
+    }
     // Book-related getters
+
     public JTextField getBookIsbnField() {
         return bookIsbnField;
     }
@@ -86,8 +100,8 @@ public class Viewer {
     public JTextField getBookPriceField() {
         return bookPriceField;
     }
-
     // Author-related getters
+
     public JTextField getAuthorIdField() {
         return authorIdField;
     }
@@ -99,8 +113,8 @@ public class Viewer {
     public JTextField getAuthorLastNameField() {
         return authorLastNameField;
     }
-
     // Customer-related getters
+
     public JTextField getCustomerIdField() {
         return customerIdField;
     }
@@ -108,7 +122,6 @@ public class Viewer {
     public JTextField getCustomerNameField() {
         return customerNameField;
     }
-
     public JTextField getCustomerAddressField() {
         return customerAddressField;
     }
