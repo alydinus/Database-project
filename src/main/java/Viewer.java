@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 
 public class Viewer {
     private JPanel login;
@@ -42,5 +43,20 @@ public class Viewer {
         login.setFocusable(false);
         register.setVisible(true);
         frame.add(register);
+    }
+
+    public JTextField getBookIsbnField() {
+        return bookIsbnField;
+    }
+    public JTextField getBookTitleField() {
+        return bookTitleField;
+    }
+
+    public JTextField getBookYearField() {
+        return bookYearField;
+    }
+
+    public JTextField getBookPriceField() {
+        return bookPriceField;
     }
 }
