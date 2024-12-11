@@ -1,11 +1,12 @@
 package dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import entities.Book;
 
-public class BookDAO extends DAO{
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class BookDAO extends DAO {
 
     protected Connection connection;
 
@@ -30,25 +31,48 @@ public class BookDAO extends DAO{
         }
     }
 
-    // Read a book record by ISBN
-    public void readBook(String isbn) {
+    // Read a single book record by ISBN (returns details as a string or Book object)
+    public Book readBook(String isbn) {
         String sql = "SELECT * FROM Book WHERE ISBN = ?";
+        Book book = null;
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, isbn);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                System.out.println("Book Details:");
-                System.out.println("ISBN: " + rs.getString("ISBN"));
-                System.out.println("Title: " + rs.getString("Title"));
-                System.out.println("Publication Year: " + rs.getInt("PublicationYear"));
-                System.out.println("Price: " + rs.getDouble("Price"));
-            } else {
-                System.out.println("Book not found.");
+                book = new Book(
+                        rs.getString("ISBN"),
+                        rs.getString("Title"),
+                        rs.getInt("PublicationYear"),
+                        rs.getDouble("Price")
+                );
             }
         } catch (SQLException e) {
             System.err.println("Error while reading book: " + e.getMessage());
         }
+        return book;
+    }
+
+    // Read all books (returns a list of books)
+    public List<Book> readBooks() {
+        String sql = "SELECT * FROM Book";
+        List<Book> books = new ArrayList<>();
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Book book = new Book(
+                        rs.getString("ISBN"),
+                        rs.getString("Title"),
+                        rs.getInt("PublicationYear"),
+                        rs.getDouble("Price")
+                );
+                books.add(book);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error while reading books: " + e.getMessage());
+        }
+        return books;
     }
 
     // Update a book record

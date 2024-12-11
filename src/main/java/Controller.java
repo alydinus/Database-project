@@ -1,7 +1,10 @@
+import entities.Book;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 public class Controller extends MouseAdapter implements ActionListener {
     private Viewer viewer;
@@ -13,6 +16,7 @@ public class Controller extends MouseAdapter implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
+        // Handling button actions for creating, updating, deleting, and reading
         if (e.getActionCommand().equals("createBook")) {
             String isbn = viewer.getBookIsbnField().getText();
             String title = viewer.getBookTitleField().getText();
@@ -30,9 +34,6 @@ public class Controller extends MouseAdapter implements ActionListener {
         } else if (e.getActionCommand().equals("deleteBook")){
             String isbn = viewer.getBookIsbnField().getText();
             model.deleteBook(isbn);
-        } else if (e.getActionCommand().equals("readBook")){
-            String isbn = viewer.getBookIsbnField().getText();
-            model.readBook(isbn);
         } else if (e.getActionCommand().equals("createAuthor")){
             String firstName = viewer.getAuthorFirstNameField().getText();
             String lastName = viewer.getAuthorLastNameField().getText();
@@ -45,9 +46,6 @@ public class Controller extends MouseAdapter implements ActionListener {
         } else if (e.getActionCommand().equals("deleteAuthor")){
             int authorId = Integer.parseInt(viewer.getAuthorIdField().getText());
             model.deleteAuthor(authorId);
-        } else if (e.getActionCommand().equals("readAuthor")){
-            int authorId = Integer.parseInt(viewer.getAuthorIdField().getText());
-            model.readAuthor(authorId);
         } else if (e.getActionCommand().equals("createCustomer")){
             String name = viewer.getCustomerNameField().getText();
             String address = viewer.getCustomerAddressField().getText();
@@ -60,24 +58,38 @@ public class Controller extends MouseAdapter implements ActionListener {
         } else if (e.getActionCommand().equals("deleteCustomer")){
             int customerId = Integer.parseInt(viewer.getCustomerIdField().getText());
             model.deleteCustomer(customerId);
+        } else if (e.getActionCommand().equals("createOrder")){
+            int customerId = Integer.parseInt(viewer.getCustomerIdField().getText());
+            String orderDate = viewer.getOrderDateField().getText();
+            model.createOrder(customerId, orderDate);
+        } else if (e.getActionCommand().equals("updateOrder")){
+            int orderId = Integer.parseInt(viewer.getOrderIdField().getText());
+            int customerId = Integer.parseInt(viewer.getCustomerIdField().getText());
+            String orderDate = viewer.getOrderDateField().getText();
+            model.updateOrder(orderId, orderDate);
+        } else if (e.getActionCommand().equals("deleteOrder")){
+            int orderId = Integer.parseInt(viewer.getOrderIdField().getText());
+            model.deleteOrder(orderId);
         }
 
-        if (e.getActionCommand().equals("login")) {
-            viewer.getLogin().checkLogin();
-        } else if (e.getActionCommand().equals("register")) {
-            viewer.getRegister().register();
+        // Show List actions for books, authors, customers, and orders
+        if (e.getActionCommand().equals("showBookList")) {
+            List<Book> bookList = model.readBooks();
+            viewer.getBookListArea().setText(bookList);  // Displaying book list in JTextArea
+        } else if (e.getActionCommand().equals("showAuthorList")) {
+            String authorList = model.getAuthorList();
+            viewer.getAuthorListArea().setText(authorList);  // Displaying author list in JTextArea
+        } else if (e.getActionCommand().equals("showCustomerList")) {
+            String customerList = model.getCustomerList();
+            viewer.getCustomerListArea().setText(customerList);  // Displaying customer list in JTextArea
+        } else if (e.getActionCommand().equals("showOrderList")) {
+            String orderList = model.getOrderList();
+            viewer.getOrderListArea().setText(orderList);  // Displaying order list in JTextArea
         }
-
     }
 
+    // This method can be removed if not needed anymore
     public void mouseClicked(MouseEvent e) {
         super.mouseClicked(e);
-        if (viewer.getLogin().isRegisterClicked(e)){
-            viewer.showRegister();
-        }
-
-
     }
-
-
 }

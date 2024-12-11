@@ -1,4 +1,7 @@
 import dao.*;
+import entities.Book;
+
+import java.util.List;
 
 public class Model {
     private Viewer viewer;
@@ -7,6 +10,7 @@ public class Model {
     private CustomerDAO customerDAO;
     private OrderDAO orderDAO;
     private OrderItemsDAO orderItemsDAO;
+
     public Model(Viewer viewer) {
         this.viewer = viewer;
         this.bookDao = new BookDAO();
@@ -16,21 +20,26 @@ public class Model {
         this.orderItemsDAO = new OrderItemsDAO();
     }
 
+    // Book-related methods
     public void createBook(String isbn, String title, int publicationYear, double price) {
         bookDao.createBook(isbn, title, publicationYear, price);
     }
+
     public void updateBook(String isbn, String title, int publicationYear, double price) {
         bookDao.updateBook(isbn, title, publicationYear, price);
     }
+
     public void deleteBook(String isbn) {
         bookDao.deleteBook(isbn);
     }
-    public void readBook(String isbn) {
-        bookDao.readBook(isbn);
+
+    public List<Book> readBooks() {
+        return bookDao.readBooks();
     }
 
-    public void createAuthor( String firstName, String lastName) {
-        authorDAO.createAuthor( firstName, lastName);
+    // Author-related methods
+    public void createAuthor(String firstName, String lastName) {
+        authorDAO.createAuthor(firstName, lastName);
     }
 
     public void updateAuthor(int authorId, String firstName, String lastName) {
@@ -41,13 +50,13 @@ public class Model {
         authorDAO.deleteAuthor(authorId);
     }
 
-    public void readAuthor(int authorId) {
-        authorDAO.readAuthor(authorId);
+    public List<String> readAuthors() {
+        return authorDAO.readAuthors(); // Assuming this method returns a list of authors
     }
 
-
-    public void createCustomer( String name, String address) {
-        customerDAO.createCustomer( name, address);
+    // Customer-related methods
+    public void createCustomer(String name, String address) {
+        customerDAO.createCustomer(name, address);
     }
 
     public void updateCustomer(int customerId, String name, String address) {
@@ -58,12 +67,13 @@ public class Model {
         customerDAO.deleteCustomer(customerId);
     }
 
-    public void readCustomer(int customerId) {
-        customerDAO.readCustomer(customerId);
+    public List<String> readCustomers() {
+        return customerDAO.readCustomers(); // Assuming this method returns a list of customers
     }
 
-    public void createOrder( int customerId, String orderDate) {
-        orderDAO.createOrder( customerId, orderDate);
+    // Order-related methods
+    public void createOrder(int customerId, String orderDate) {
+        orderDAO.createOrder(customerId, orderDate);
     }
 
     public void updateOrder(int orderId, String orderDate) {
@@ -74,10 +84,11 @@ public class Model {
         orderDAO.deleteOrder(orderId);
     }
 
-    public void readOrder(int orderId) {
-        orderDAO.readOrder(orderId);
+    public List<String> readOrders() {
+        return orderDAO.readOrders(); // Assuming this method returns a list of orders
     }
 
+    // Order Items-related methods
     public void createOrderItem(int orderId, String bookIsbn, int quantity) {
         orderItemsDAO.createOrderItem(orderId, bookIsbn, quantity);
     }
@@ -93,7 +104,4 @@ public class Model {
     public void readOrderItems(int orderId) {
         orderItemsDAO.readOrderItems(orderId);
     }
-
-
-
 }

@@ -6,6 +6,13 @@ public class Book {
     private int publicationYear;
     private double price;
 
+    public Book(String isbn, String title, int publicationYear, double price) {
+        this.isbn = isbn;
+        this.title = title;
+        this.publicationYear = publicationYear;
+        this.price = price;
+    }
+
     // Getters and Setters
     public String getIsbn() {
         return isbn;

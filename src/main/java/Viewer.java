@@ -1,204 +1,291 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 
-public class Viewer {
-    private JPanel login;
-    private Controller controller;
-    private JFrame frame;
-    private Register register;
+public class Viewer extends JFrame {
+    private JTextField bookIsbnField, bookTitleField, bookYearField, bookPriceField;
+    private JTextArea bookListArea;
+    private JTextField authorIdField, authorFirstNameField, authorLastNameField;
+    private JTextArea authorListArea;
+    private JTextField customerIdField, customerNameField, customerAddressField;
+    private JTextArea customerListArea;
+    private JTextField orderIdField, customerIdFieldForOrder, orderDateField;
+    private JTextArea orderListArea;
 
-    // Book-related fields
-    private JTextField bookIsbnField;
-    private JTextField bookTitleField;
-    private JTextField bookYearField;
-    private JTextField bookPriceField;
-
-    // Author-related fields
-    private JTextField authorIdField;
-    private JTextField authorFirstNameField;
-    private JTextField authorLastNameField;
-
-    // Customer-related fields
-    private JTextField customerIdField;
-    private JTextField customerNameField;
-    private JTextField customerAddressField;
-
-    // Panels for different sections
-    private JPanel bookPanel;
-    private JPanel authorPanel;
-    private JPanel customerPanel;
-
-    private JPanel mainPanel;
+    private JButton createBookButton, updateBookButton, deleteBookButton, showBookListButton;
+    private JButton createAuthorButton, updateAuthorButton, deleteAuthorButton, showAuthorListButton;
+    private JButton createCustomerButton, updateCustomerButton, deleteCustomerButton, showCustomerListButton;
+    private JButton createOrderButton, updateOrderButton, deleteOrderButton, showOrderListButton;
 
     public Viewer() {
-        controller = new Controller(this);
-        login = new Login(this);
-        register = new Register(this);
+        setTitle("Bookstore Management");
+        setSize(800, 600);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setLayout(new BorderLayout());
 
-        // Initializing the fields
-        bookIsbnField = new JTextField(20);
-        bookTitleField = new JTextField(20);
-        bookYearField = new JTextField(4);
-        bookPriceField = new JTextField(8);
+        // Panels for book actions
+        JPanel bookPanel = new JPanel();
+        bookPanel.setLayout(new GridLayout(5, 2));
+        bookPanel.add(new JLabel("ISBN:"));
+        bookIsbnField = new JTextField();
+        bookPanel.add(bookIsbnField);
+        bookPanel.add(new JLabel("Title:"));
+        bookTitleField = new JTextField();
+        bookPanel.add(bookTitleField);
+        bookPanel.add(new JLabel("Year:"));
+        bookYearField = new JTextField();
+        bookPanel.add(bookYearField);
+        bookPanel.add(new JLabel("Price:"));
+        bookPriceField = new JTextField();
+        bookPanel.add(bookPriceField);
 
-        authorIdField = new JTextField(10);
-        authorFirstNameField = new JTextField(20);
-        authorLastNameField = new JTextField(20);
+        createBookButton = new JButton("Create Book");
+        updateBookButton = new JButton("Update Book");
+        deleteBookButton = new JButton("Delete Book");
+        showBookListButton = new JButton("Show Book List");
 
-        customerIdField = new JTextField(10);
-        customerNameField = new JTextField(30);
-        customerAddressField = new JTextField(50);
+        bookPanel.add(createBookButton);
+        bookPanel.add(updateBookButton);
+        bookPanel.add(deleteBookButton);
+        bookPanel.add(showBookListButton);
 
-        // Frame initialization
-        frame = new JFrame("Book Store Management System");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 600);
-        frame.setLocationRelativeTo(null);
+        // Panel for book list
+        bookListArea = new JTextArea();
+        bookListArea.setEditable(false);
+        JScrollPane bookScrollPane = new JScrollPane(bookListArea);
 
-        // Initialize Panels
-        mainPanel = new JPanel(new CardLayout()); // Using CardLayout to switch between panels
+        // Panels for author actions
+        JPanel authorPanel = new JPanel();
+        authorPanel.setLayout(new GridLayout(4, 2));
+        authorPanel.add(new JLabel("Author ID:"));
+        authorIdField = new JTextField();
+        authorPanel.add(authorIdField);
+        authorPanel.add(new JLabel("First Name:"));
+        authorFirstNameField = new JTextField();
+        authorPanel.add(authorFirstNameField);
+        authorPanel.add(new JLabel("Last Name:"));
+        authorLastNameField = new JTextField();
+        authorPanel.add(authorLastNameField);
 
-        // Initializing section panels
-        bookPanel = createBookPanel();
-        authorPanel = createAuthorPanel();
-        customerPanel = createCustomerPanel();
+        createAuthorButton = new JButton("Create Author");
+        updateAuthorButton = new JButton("Update Author");
+        deleteAuthorButton = new JButton("Delete Author");
+        showAuthorListButton = new JButton("Show Author List");
 
-        // Add panels to the main panel
-        mainPanel.add(login, "Login");
-        mainPanel.add(register, "Register");
-        mainPanel.add(bookPanel, "Book Management");
-        mainPanel.add(authorPanel, "Author Management");
-        mainPanel.add(customerPanel, "Customer Management");
+        authorPanel.add(createAuthorButton);
+        authorPanel.add(updateAuthorButton);
+        authorPanel.add(deleteAuthorButton);
+        authorPanel.add(showAuthorListButton);
 
-        frame.add(mainPanel);
-        frame.setVisible(true);
+        // Panel for author list
+        authorListArea = new JTextArea();
+        authorListArea.setEditable(false);
+        JScrollPane authorScrollPane = new JScrollPane(authorListArea);
+
+        // Panels for customer actions
+        JPanel customerPanel = new JPanel();
+        customerPanel.setLayout(new GridLayout(4, 2));
+        customerPanel.add(new JLabel("Customer ID:"));
+        customerIdField = new JTextField();
+        customerPanel.add(customerIdField);
+        customerPanel.add(new JLabel("Name:"));
+        customerNameField = new JTextField();
+        customerPanel.add(customerNameField);
+        customerPanel.add(new JLabel("Address:"));
+        customerAddressField = new JTextField();
+        customerPanel.add(customerAddressField);
+
+        createCustomerButton = new JButton("Create Customer");
+        updateCustomerButton = new JButton("Update Customer");
+        deleteCustomerButton = new JButton("Delete Customer");
+        showCustomerListButton = new JButton("Show Customer List");
+
+        customerPanel.add(createCustomerButton);
+        customerPanel.add(updateCustomerButton);
+        customerPanel.add(deleteCustomerButton);
+        customerPanel.add(showCustomerListButton);
+
+        // Panel for customer list
+        customerListArea = new JTextArea();
+        customerListArea.setEditable(false);
+        JScrollPane customerScrollPane = new JScrollPane(customerListArea);
+
+        // Panels for order actions
+        JPanel orderPanel = new JPanel();
+        orderPanel.setLayout(new GridLayout(4, 2));
+        orderPanel.add(new JLabel("Order ID:"));
+        orderIdField = new JTextField();
+        orderPanel.add(orderIdField);
+        orderPanel.add(new JLabel("Customer ID:"));
+        customerIdFieldForOrder = new JTextField();
+        orderPanel.add(customerIdFieldForOrder);
+        orderPanel.add(new JLabel("Order Date:"));
+        orderDateField = new JTextField();
+        orderPanel.add(orderDateField);
+
+        createOrderButton = new JButton("Create Order");
+        updateOrderButton = new JButton("Update Order");
+        deleteOrderButton = new JButton("Delete Order");
+        showOrderListButton = new JButton("Show Order List");
+
+        orderPanel.add(createOrderButton);
+        orderPanel.add(updateOrderButton);
+        orderPanel.add(deleteOrderButton);
+        orderPanel.add(showOrderListButton);
+
+        // Panel for order list
+        orderListArea = new JTextArea();
+        orderListArea.setEditable(false);
+        JScrollPane orderScrollPane = new JScrollPane(orderListArea);
+
+        // Adding all panels and areas to the frame
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new GridLayout(2, 2));
+        topPanel.add(bookPanel);
+        topPanel.add(authorPanel);
+        topPanel.add(customerPanel);
+        topPanel.add(orderPanel);
+
+        add(topPanel, BorderLayout.NORTH);
+        add(bookScrollPane, BorderLayout.WEST);
+        add(authorScrollPane, BorderLayout.CENTER);
+        add(customerScrollPane, BorderLayout.EAST);
+        add(orderScrollPane, BorderLayout.SOUTH);
+
+        setVisible(true);
     }
 
-    public void showRegister() {
-        switchPanel("Register");
+    public JTextField getBookIsbnField() {
+        return bookIsbnField;
     }
 
-    public void showBookManagement() {
-        switchPanel("Book Management");
+    public JTextField getBookTitleField() {
+        return bookTitleField;
     }
 
-    public void showAuthorManagement() {
-        switchPanel("Author Management");
+    public JTextField getBookYearField() {
+        return bookYearField;
     }
 
-    public void showCustomerManagement() {
-        switchPanel("Customer Management");
+    public JTextField getBookPriceField() {
+        return bookPriceField;
     }
 
-    private void switchPanel(String panelName) {
-        CardLayout cl = (CardLayout) (mainPanel.getLayout());
-        cl.show(mainPanel, panelName);
+    public JTextArea getBookListArea() {
+        return bookListArea;
     }
 
-    // This method will be triggered after successful login
-    public void onLoginSuccess() {
-        // Hide login and show book management (or other sections)
-        switchPanel("Book Management");  // You can change this to the first section you'd like to show after login
+    public JTextField getAuthorIdField() {
+        return authorIdField;
     }
 
-    // Book Panel Creation
-    private JPanel createBookPanel() {
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(5, 2)); // Book form layout
-
-        panel.add(new JLabel("ISBN:"));
-        panel.add(bookIsbnField);
-
-        panel.add(new JLabel("Title:"));
-        panel.add(bookTitleField);
-
-        panel.add(new JLabel("Year:"));
-        panel.add(bookYearField);
-
-        panel.add(new JLabel("Price:"));
-        panel.add(bookPriceField);
-
-        // Buttons for actions
-        JButton createBookButton = new JButton("Create Book");
-        panel.add(createBookButton);
-        createBookButton.addActionListener(controller);
-
-        return panel;
+    public JTextField getAuthorFirstNameField() {
+        return authorFirstNameField;
     }
 
-    // Author Panel Creation
-    private JPanel createAuthorPanel() {
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(4, 2));
-
-        panel.add(new JLabel("Author ID:"));
-        panel.add(authorIdField);
-
-        panel.add(new JLabel("First Name:"));
-        panel.add(authorFirstNameField);
-
-        panel.add(new JLabel("Last Name:"));
-        panel.add(authorLastNameField);
-
-        // Button for author creation
-        JButton createAuthorButton = new JButton("Create Author");
-        panel.add(createAuthorButton);
-        createAuthorButton.addActionListener(controller);
-
-        return panel;
+    public JTextField getAuthorLastNameField() {
+        return authorLastNameField;
     }
 
-    // Customer Panel Creation
-    private JPanel createCustomerPanel() {
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(4, 2));
-
-        panel.add(new JLabel("Customer ID:"));
-        panel.add(customerIdField);
-
-        panel.add(new JLabel("Name:"));
-        panel.add(customerNameField);
-
-        panel.add(new JLabel("Address:"));
-        panel.add(customerAddressField);
-
-        // Button for customer creation
-        JButton createCustomerButton = new JButton("Create Customer");
-        panel.add(createCustomerButton);
-        createCustomerButton.addActionListener(controller);
-
-        return panel;
+    public JTextArea getAuthorListArea() {
+        return authorListArea;
     }
 
-    // Getters for fields (Book, Author, Customer)
-    public JTextField getBookIsbnField() { return bookIsbnField; }
-    public JTextField getBookTitleField() { return bookTitleField; }
-    public JTextField getBookYearField() { return bookYearField; }
-    public JTextField getBookPriceField() { return bookPriceField; }
-
-    public JTextField getAuthorIdField() { return authorIdField; }
-    public JTextField getAuthorFirstNameField() { return authorFirstNameField; }
-    public JTextField getAuthorLastNameField() { return authorLastNameField; }
-
-    public JTextField getCustomerIdField() { return customerIdField; }
-    public JTextField getCustomerNameField() { return customerNameField; }
-    public JTextField getCustomerAddressField() { return customerAddressField; }
-
-    // Access to the controller
-    public Controller getController() {
-        return controller;
+    public JTextField getCustomerIdField() {
+        return customerIdField;
     }
 
-    // Getters for other components
-    public Login getLogin() {
-        return (Login) login;
+    public JTextField getCustomerNameField() {
+        return customerNameField;
     }
 
-    public Register getRegister() {
-        return register;
+    public JTextField getCustomerAddressField() {
+        return customerAddressField;
     }
 
-    public JFrame getFrame() {
-        return frame;
+    public JTextArea getCustomerListArea() {
+        return customerListArea;
+    }
+
+    public JTextField getOrderIdField() {
+        return orderIdField;
+    }
+
+    public JTextField getCustomerIdFieldForOrder() {
+        return customerIdFieldForOrder;
+    }
+
+    public JTextField getOrderDateField() {
+        return orderDateField;
+    }
+
+    public JTextArea getOrderListArea() {
+        return orderListArea;
+    }
+
+    // Methods for adding action listeners
+    public void addCreateBookListener(ActionListener listener) {
+        createBookButton.addActionListener(listener);
+    }
+
+    public void addUpdateBookListener(ActionListener listener) {
+        updateBookButton.addActionListener(listener);
+    }
+
+    public void addDeleteBookListener(ActionListener listener) {
+        deleteBookButton.addActionListener(listener);
+    }
+
+    public void addShowBookListListener(ActionListener listener) {
+        showBookListButton.addActionListener(listener);
+    }
+
+    public void addCreateAuthorListener(ActionListener listener) {
+        createAuthorButton.addActionListener(listener);
+    }
+
+    public void addUpdateAuthorListener(ActionListener listener) {
+        updateAuthorButton.addActionListener(listener);
+    }
+
+    public void addDeleteAuthorListener(ActionListener listener) {
+        deleteAuthorButton.addActionListener(listener);
+    }
+
+    public void addShowAuthorListListener(ActionListener listener) {
+        showAuthorListButton.addActionListener(listener);
+    }
+
+    public void addCreateCustomerListener(ActionListener listener) {
+        createCustomerButton.addActionListener(listener);
+    }
+
+    public void addUpdateCustomerListener(ActionListener listener) {
+        updateCustomerButton.addActionListener(listener);
+    }
+
+    public void addDeleteCustomerListener(ActionListener listener) {
+        deleteCustomerButton.addActionListener(listener);
+    }
+
+    public void addShowCustomerListListener(ActionListener listener) {
+        showCustomerListButton.addActionListener(listener);
+    }
+
+    public void addCreateOrderListener(ActionListener listener) {
+        createOrderButton.addActionListener(listener);
+    }
+
+    public void addUpdateOrderListener(ActionListener listener) {
+        updateOrderButton.addActionListener(listener);
+    }
+
+    public void addDeleteOrderListener(ActionListener listener) {
+        deleteOrderButton.addActionListener(listener);
+    }
+
+    public void addShowOrderListListener(ActionListener listener) {
+        showOrderListButton.addActionListener(listener);
     }
 }
