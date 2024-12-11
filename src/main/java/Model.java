@@ -12,12 +12,12 @@ public class Model {
     private OrderItemsDAO orderItemsDAO;
 
     public Model(Viewer viewer) {
-        this.viewer = viewer;
-        this.bookDao = new BookDAO();
-        this.authorDAO = new AuthorDAO();
-        this.customerDAO = new CustomerDAO();
-        this.orderDAO = new OrderDAO();
-        this.orderItemsDAO = new OrderItemsDAO();
+//        this.viewer = viewer;
+//        this.bookDao = new BookDAO();
+//        this.authorDAO = new AuthorDAO();
+//        this.customerDAO = new CustomerDAO();
+//        this.orderDAO = new OrderDAO();
+//        this.orderItemsDAO = new OrderItemsDAO();
     }
 
 

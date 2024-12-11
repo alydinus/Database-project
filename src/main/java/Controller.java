@@ -17,6 +17,10 @@ public class Controller extends MouseAdapter implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         // Handling button actions for creating, updating, deleting, and reading
+        if (e.getActionCommand().equals("options")) {
+            if (viewer.getSelectedOption().equals("Show all orders")) {
+            }
+        }
 
     }
 

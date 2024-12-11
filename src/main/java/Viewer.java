@@ -1,9 +1,11 @@
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class Viewer extends JPanel {
@@ -11,6 +13,7 @@ public class Viewer extends JPanel {
     private Connection connection;
     private JComboBox<String> options;
     public Viewer() {
+        Controller controller = new Controller(this);
         loadResources();
 
         JFrame frame = new JFrame();
@@ -21,13 +24,20 @@ public class Viewer extends JPanel {
 
 
         setSize(800, 600);
-        setLayout(new BorderLayout());
+        setLayout(null);
 
 
         options = new JComboBox<>();
+        options.setBounds(0,0,800, 20);
+        options.addActionListener(controller);
+        options.setActionCommand("options");
         fillOptions();
 
-        frame.add(options, BorderLayout.NORTH);
+
+
+
+        add(options);
+        frame.add(this);
         frame.setVisible(true);
     }
 
@@ -39,7 +49,6 @@ public class Viewer extends JPanel {
         String PASSWORD = resourceBundle.getString("PASSWORD");
         try {
             connection = DriverManager.getConnection(URL, USER, PASSWORD);
-            System.out.println("Connection successful");
         } catch (SQLException e) {
             System.out.println("Connection failed" + e.getMessage());
         }
@@ -72,6 +81,9 @@ public class Viewer extends JPanel {
         options.addItem("Calculate total revenue.");
         options.addItem("Identify customers who have not made a purchase.");
 
+    }
 
+    public String getSelectedOption() {
+        return (String) options.getSelectedItem();
     }
 }
