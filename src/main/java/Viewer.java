@@ -1,11 +1,14 @@
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 public class Viewer {
     private JPanel login;
     private Controller controller;
     private JFrame frame;
     private Register register;
+    private JTextField bookIsbnField;
+    private JTextField bookTitleField;
+    private JTextField bookYearField;
+    private JTextField bookPriceField;
 
     public Viewer() {
         controller = new Controller(this);

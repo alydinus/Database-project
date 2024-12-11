@@ -1,17 +1,20 @@
 package dao;
 
-import db.DBConnection;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class OrderItemsDAO {
-    public static void createOrderItem(int orderId, String bookIsbn, int quantity) {
+public class OrderItemsDAO extends AuthorDAO {
+
+    public OrderItemsDAO() {
+        loadResource("application");
+    }
+
+    // Create an order item
+    public void createOrderItem(int orderId, String bookIsbn, int quantity) {
         String sql = "INSERT INTO Order_Items (OrderID, BookISBN, Quantity) VALUES (?, ?, ?)";
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, orderId);
             stmt.setString(2, bookIsbn);
             stmt.setInt(3, quantity);
@@ -22,10 +25,10 @@ public class OrderItemsDAO {
         }
     }
 
-    public static void readOrderItems(int orderId) {
+    // Read order items by order ID
+    public void readOrderItems(int orderId) {
         String sql = "SELECT * FROM Order_Items WHERE OrderID = ?";
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, orderId);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
@@ -38,10 +41,10 @@ public class OrderItemsDAO {
         }
     }
 
-    public static void updateOrderItem(int orderId, String bookIsbn, int quantity) {
+    // Update an order item by order ID and book ISBN
+    public void updateOrderItem(int orderId, String bookIsbn, int quantity) {
         String sql = "UPDATE Order_Items SET Quantity = ? WHERE OrderID = ? AND BookISBN = ?";
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, quantity);
             stmt.setInt(2, orderId);
             stmt.setString(3, bookIsbn);
@@ -56,10 +59,10 @@ public class OrderItemsDAO {
         }
     }
 
-    public static void deleteOrderItem(int orderId, String bookIsbn) {
+    // Delete an order item by order ID and book ISBN
+    public void deleteOrderItem(int orderId, String bookIsbn) {
         String sql = "DELETE FROM Order_Items WHERE OrderID = ? AND BookISBN = ?";
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, orderId);
             stmt.setString(2, bookIsbn);
             int rowsDeleted = stmt.executeUpdate();

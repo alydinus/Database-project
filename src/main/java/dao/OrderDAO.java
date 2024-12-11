@@ -1,17 +1,23 @@
 package dao;
 
-import db.DBConnection;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class OrderDAO {
-    public static void createOrder(int customerId, String orderDate) {
+public class OrderDAO extends AuthorDAO {
+
+    protected Connection connection;
+
+    // Constructor to initialize the connection
+    public OrderDAO() {
+        loadResource("application"); // Assuming loadResource initializes the connection
+    }
+
+    // Create an order record
+    public void createOrder(int customerId, String orderDate) {
         String sql = "INSERT INTO Orders (OrderDate, CustomerID) VALUES (?, ?)";
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, orderDate);
             stmt.setInt(2, customerId);
             stmt.executeUpdate();
@@ -21,10 +27,10 @@ public class OrderDAO {
         }
     }
 
-    public static void readOrder(int orderId) {
+    // Read an order record by ID
+    public void readOrder(int orderId) {
         String sql = "SELECT * FROM Orders WHERE OrderID = ?";
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, orderId);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
@@ -40,10 +46,10 @@ public class OrderDAO {
         }
     }
 
-    public static void updateOrder(int orderId, String orderDate) {
+    // Update an order record
+    public void updateOrder(int orderId, String orderDate) {
         String sql = "UPDATE Orders SET OrderDate = ? WHERE OrderID = ?";
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, orderDate);
             stmt.setInt(2, orderId);
             int rowsUpdated = stmt.executeUpdate();
@@ -57,10 +63,10 @@ public class OrderDAO {
         }
     }
 
-    public static void deleteOrder(int orderId) {
+    // Delete an order record by ID
+    public void deleteOrder(int orderId) {
         String sql = "DELETE FROM Orders WHERE OrderID = ?";
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, orderId);
             int rowsDeleted = stmt.executeUpdate();
             if (rowsDeleted > 0) {

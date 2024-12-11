@@ -13,6 +13,14 @@ public class Controller extends MouseAdapter implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
+        if (e.getActionCommand().equals("createBook")) {
+            String isbn = viewer.getBookIsbnField().getText();
+            String title = viewer.getBookTitleField().getText();
+            int publicationYear = Integer.parseInt(viewer.getBookYearField().getText());
+            double price = Double.parseDouble(viewer.getBookPriceField().getText());
+
+            model.createBook(isbn, title, publicationYear, price);
+        }
         if (e.getActionCommand().equals("login")) {
             viewer.getLogin().checkLogin();
         } else if (e.getActionCommand().equals("register")) {

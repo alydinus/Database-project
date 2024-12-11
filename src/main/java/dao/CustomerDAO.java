@@ -1,17 +1,23 @@
 package dao;
 
-import db.DBConnection;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class CustomerDAO {
-    public static void createCustomer(String name, String address) {
+public class CustomerDAO extends AuthorDAO {
+
+    protected Connection connection;
+
+    // Constructor to initialize the connection
+    public CustomerDAO() {
+        loadResource("application");
+    }
+
+    // Create a customer record
+    public void createCustomer(String name, String address) {
         String sql = "INSERT INTO Customer (Name, Address) VALUES (?, ?)";
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, name);
             stmt.setString(2, address);
             stmt.executeUpdate();
@@ -21,10 +27,10 @@ public class CustomerDAO {
         }
     }
 
-    public static void readCustomer(int customerId) {
+    // Read a customer record by ID
+    public void readCustomer(int customerId) {
         String sql = "SELECT * FROM Customer WHERE CustomerID = ?";
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, customerId);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
@@ -40,10 +46,10 @@ public class CustomerDAO {
         }
     }
 
-    public static void updateCustomer(int customerId, String name, String address) {
+    // Update a customer record
+    public void updateCustomer(int customerId, String name, String address) {
         String sql = "UPDATE Customer SET Name = ?, Address = ? WHERE CustomerID = ?";
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, name);
             stmt.setString(2, address);
             stmt.setInt(3, customerId);
@@ -58,10 +64,10 @@ public class CustomerDAO {
         }
     }
 
-    public static void deleteCustomer(int customerId) {
+    // Delete a customer record by ID
+    public void deleteCustomer(int customerId) {
         String sql = "DELETE FROM Customer WHERE CustomerID = ?";
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, customerId);
             int rowsDeleted = stmt.executeUpdate();
             if (rowsDeleted > 0) {

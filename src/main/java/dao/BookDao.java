@@ -1,18 +1,25 @@
 package dao;
-import db.DBConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ResourceBundle;
 
+public class BookDao extends AuthorDAO{
 
-public class BookDao {
-    public static void createBook(String isbn, String title, int publicationYear, double price) {
+    protected Connection connection;
+
+    // Constructor to initialize the connection
+    public BookDao() {
+        loadResource("application");
+    }
+
+    // Create a book record
+    public void createBook(String isbn, String title, int publicationYear, double price) {
         String sql = "INSERT INTO Book (ISBN, Title, PublicationYear, Price) VALUES (?, ?, ?, ?)";
 
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, isbn);
             stmt.setString(2, title);
             stmt.setInt(3, publicationYear);
@@ -23,10 +30,12 @@ public class BookDao {
             System.err.println("Error while adding book: " + e.getMessage());
         }
     }
-    public static void readBook(String isbn) {
+
+    // Read a book record by ISBN
+    public void readBook(String isbn) {
         String sql = "SELECT * FROM Book WHERE ISBN = ?";
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, isbn);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
@@ -43,10 +52,11 @@ public class BookDao {
         }
     }
 
-    public static void updateBook(String isbn, String title, int publicationYear, double price) {
+    // Update a book record
+    public void updateBook(String isbn, String title, int publicationYear, double price) {
         String sql = "UPDATE Book SET Title = ?, PublicationYear = ?, Price = ? WHERE ISBN = ?";
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, title);
             stmt.setInt(2, publicationYear);
             stmt.setDouble(3, price);
@@ -62,10 +72,11 @@ public class BookDao {
         }
     }
 
-    public static void deleteBook(String isbn) {
+    // Delete a book record by ISBN
+    public void deleteBook(String isbn) {
         String sql = "DELETE FROM Book WHERE ISBN = ?";
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, isbn);
             int rowsDeleted = stmt.executeUpdate();
             if (rowsDeleted > 0) {
