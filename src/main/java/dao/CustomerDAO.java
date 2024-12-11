@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CustomerDAO {
-    public void createCustomer(String name, String address) {
+    public static void createCustomer(String name, String address) {
         String sql = "INSERT INTO Customer (Name, Address) VALUES (?, ?)";
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -21,7 +21,7 @@ public class CustomerDAO {
         }
     }
 
-    public void readCustomer(int customerId) {
+    public static void readCustomer(int customerId) {
         String sql = "SELECT * FROM Customer WHERE CustomerID = ?";
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -40,7 +40,7 @@ public class CustomerDAO {
         }
     }
 
-    public void updateCustomer(int customerId, String name, String address) {
+    public static void updateCustomer(int customerId, String name, String address) {
         String sql = "UPDATE Customer SET Name = ?, Address = ? WHERE CustomerID = ?";
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -58,7 +58,7 @@ public class CustomerDAO {
         }
     }
 
-    public void deleteCustomer(int customerId) {
+    public static void deleteCustomer(int customerId) {
         String sql = "DELETE FROM Customer WHERE CustomerID = ?";
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql)) {

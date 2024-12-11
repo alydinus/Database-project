@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class OrderItemsDAO {
-    public void createOrderItem(int orderId, String bookIsbn, int quantity) {
+    public static void createOrderItem(int orderId, String bookIsbn, int quantity) {
         String sql = "INSERT INTO Order_Items (OrderID, BookISBN, Quantity) VALUES (?, ?, ?)";
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -22,7 +22,7 @@ public class OrderItemsDAO {
         }
     }
 
-    public void readOrderItems(int orderId) {
+    public static void readOrderItems(int orderId) {
         String sql = "SELECT * FROM Order_Items WHERE OrderID = ?";
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -38,7 +38,7 @@ public class OrderItemsDAO {
         }
     }
 
-    public void updateOrderItem(int orderId, String bookIsbn, int quantity) {
+    public static void updateOrderItem(int orderId, String bookIsbn, int quantity) {
         String sql = "UPDATE Order_Items SET Quantity = ? WHERE OrderID = ? AND BookISBN = ?";
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -56,7 +56,7 @@ public class OrderItemsDAO {
         }
     }
 
-    public void deleteOrderItem(int orderId, String bookIsbn) {
+    public static void deleteOrderItem(int orderId, String bookIsbn) {
         String sql = "DELETE FROM Order_Items WHERE OrderID = ? AND BookISBN = ?";
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql)) {

@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 
 public class BookDao {
-    public void createBook(String isbn, String title, int publicationYear, double price) {
+    public static void createBook(String isbn, String title, int publicationYear, double price) {
         String sql = "INSERT INTO Book (ISBN, Title, PublicationYear, Price) VALUES (?, ?, ?, ?)";
 
         try (Connection connection = DBConnection.getConnection();
@@ -23,7 +23,7 @@ public class BookDao {
             System.err.println("Error while adding book: " + e.getMessage());
         }
     }
-    public void readBook(String isbn) {
+    public static void readBook(String isbn) {
         String sql = "SELECT * FROM Book WHERE ISBN = ?";
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -43,7 +43,7 @@ public class BookDao {
         }
     }
 
-    public void updateBook(String isbn, String title, int publicationYear, double price) {
+    public static void updateBook(String isbn, String title, int publicationYear, double price) {
         String sql = "UPDATE Book SET Title = ?, PublicationYear = ?, Price = ? WHERE ISBN = ?";
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -62,7 +62,7 @@ public class BookDao {
         }
     }
 
-    public void deleteBook(String isbn) {
+    public static void deleteBook(String isbn) {
         String sql = "DELETE FROM Book WHERE ISBN = ?";
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql)) {
