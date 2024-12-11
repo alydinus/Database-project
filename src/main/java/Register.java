@@ -12,11 +12,14 @@ public class Register extends Frame{
     private JTextField password;
     private JButton registerButton;
     private JComboBox<String> comboBox;
+    private Login login;
 
     public Register(Viewer viewer) {
         super();
         setLayout(null);
 
+
+        login = viewer.getLogin();
 
         comboBox = new JComboBox<>();
         comboBox.addItem("Admins");
@@ -65,8 +68,17 @@ public class Register extends Frame{
         if (comboBox.getSelectedItem().equals("Admins")) {
             addAdmin(nameToAdd, passwordToAdd);
             JOptionPane.showMessageDialog(this, "Admin added successfully");
+            if (!login.isVisible()){
+                this.setVisible(false);
+                login.setVisible(true);
+            }
         } else {
             addUser(nameToAdd, passwordToAdd);
+            JOptionPane.showMessageDialog(this, "User added successfully");
+            if (!login.isVisible()){
+                this.setVisible(false);
+                login.setVisible(true);
+            }
         }
     }
     private void addAdmin(String name, String password) {

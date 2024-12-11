@@ -4,14 +4,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ResourceBundle;
 
-public class BookDao extends AuthorDAO{
+public class BookDAO extends AuthorDAO{
 
     protected Connection connection;
 
     // Constructor to initialize the connection
-    public BookDao() {
+    public BookDAO() {
         loadResource("application");
     }
 

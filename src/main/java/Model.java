@@ -2,14 +2,14 @@ import dao.*;
 
 public class Model {
     private Viewer viewer;
-    private BookDao bookDao;
+    private BookDAO bookDao;
     private AuthorDAO authorDAO;
     private CustomerDAO customerDAO;
     private OrderDAO orderDAO;
     private OrderItemsDAO orderItemsDAO;
     public Model(Viewer viewer) {
         this.viewer = viewer;
-        this.bookDao = new BookDao();
+        this.bookDao = new BookDAO();
         this.authorDAO = new AuthorDAO();
         this.customerDAO = new CustomerDAO();
         this.orderDAO = new OrderDAO();
