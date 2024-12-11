@@ -18,6 +18,7 @@ public class Controller extends MouseAdapter implements ActionListener {
         } else if (e.getActionCommand().equals("register")) {
             viewer.getRegister().register();
         }
+
     }
 
     public void mouseClicked(MouseEvent e) {
@@ -28,4 +29,6 @@ public class Controller extends MouseAdapter implements ActionListener {
 
 
     }
+
+
 }
