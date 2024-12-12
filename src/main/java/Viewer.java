@@ -50,6 +50,7 @@ public class Viewer extends JPanel {
         submitButton.setBounds(0, 50, 100, 20);
         submitButton.addActionListener(controller);
         submitButton.setActionCommand("submit");
+        submitButton.setFocusable(false);
 
 
 
@@ -146,6 +147,12 @@ public class Viewer extends JPanel {
     public double getPrice() {
         return Double.parseDouble(priceField.getText());
     }
+
+    public void showAllBooks() {
+
+
+    }
+
 
 
 }

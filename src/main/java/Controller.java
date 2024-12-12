@@ -17,14 +17,14 @@ public class Controller extends MouseAdapter implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         // Handling button actions for creating, updating, deleting, and reading
         if (e.getActionCommand().equals("options")) {
-            if (viewer.getSelectedOption().equals("Create book")) {
+            String option = viewer.getSelectedOption();
+            if (option.equals("Create book")) {
                 viewer.showCreateBookForm();
             }
         }
         if (e.getActionCommand().equals("submit")) {
-            model.createBook(viewer.getIsbn(), viewer.getTitle(), viewer.getPublicationYear(), viewer.getPrice());
+            model.executeOption(viewer.getSelectedOption());
         }
-
     }
 
     // This method can be removed if not needed anymore
