@@ -13,6 +13,7 @@ public class BookDAO extends DAO {
     // Constructor to initialize the connection
     public BookDAO() {
         loadResource("application");
+        connection = getConnection();
     }
 
     // Create a book record

@@ -12,13 +12,19 @@ public class Model {
     private OrderItemsDAO orderItemsDAO;
 
     public Model(Viewer viewer) {
-//        this.viewer = viewer;
-//        this.bookDao = new BookDAO();
-//        this.authorDAO = new AuthorDAO();
-//        this.customerDAO = new CustomerDAO();
-//        this.orderDAO = new OrderDAO();
-//        this.orderItemsDAO = new OrderItemsDAO();
+        this.viewer = viewer;
+        this.bookDao = new BookDAO();
+        this.authorDAO = new AuthorDAO();
+        this.customerDAO = new CustomerDAO();
+        this.orderDAO = new OrderDAO();
+        this.orderItemsDAO = new OrderItemsDAO();
     }
+
+
+    public void createBook(String isbn, String title, int publicationYear, double price) {
+        bookDao.createBook(isbn, title, publicationYear, price);
+    }
+
 
 
 }

@@ -1,10 +1,9 @@
 import entities.Book;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.List;
+import java.util.HashMap;
 
 public class Controller extends MouseAdapter implements ActionListener {
     private Viewer viewer;
@@ -18,8 +17,12 @@ public class Controller extends MouseAdapter implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         // Handling button actions for creating, updating, deleting, and reading
         if (e.getActionCommand().equals("options")) {
-            if (viewer.getSelectedOption().equals("Show all orders")) {
+            if (viewer.getSelectedOption().equals("Create book")) {
+                viewer.showCreateBookForm();
             }
+        }
+        if (e.getActionCommand().equals("submit")) {
+            model.createBook(viewer.getIsbn(), viewer.getTitle(), viewer.getPublicationYear(), viewer.getPrice());
         }
 
     }
