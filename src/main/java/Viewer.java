@@ -14,6 +14,8 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class Viewer extends JPanel{
+    private Model model;
+
     private Font font;
 
     private ResourceBundle resourceBundle;
@@ -32,6 +34,8 @@ public class Viewer extends JPanel{
     public Viewer() {
         loadResources();
         controller = new Controller(this);
+
+        model = controller.getModel();
 
         font = new Font("Arial", Font.BOLD, 25);
 
@@ -116,7 +120,7 @@ public class Viewer extends JPanel{
     }
 
     public void showBooks() {
-        booksPanel = new BooksPanel(this);
+        booksPanel = new BooksPanel(this, model);
         setVisible(false);
         frame.add(booksPanel);
     }
@@ -137,6 +141,23 @@ public class Viewer extends JPanel{
         customersPanel = new CustomerPanel(this);
         setVisible(false);
         frame.add(customersPanel);
+    }
+
+    public BooksPanel getBooksPanel() {
+        return booksPanel;
+    }
+
+    public void showViewer() {
+        if (booksPanel.isVisible()) {
+            booksPanel.setVisible(false);
+        } else if (authorsPanel.isVisible()) {
+            authorsPanel.setVisible(false);
+        } else if (ordersPanel.isVisible()) {
+            ordersPanel.setVisible(false);
+        } else if (customersPanel.isVisible()) {
+            customersPanel.setVisible(false);
+        }
+        setVisible(true);
     }
 
 

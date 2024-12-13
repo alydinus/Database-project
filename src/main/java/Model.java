@@ -24,6 +24,7 @@ public class Model {
 
     public void createBook(String isbn, String title, int publicationYear, double price) {
         bookDao.createBook(isbn, title, publicationYear, price);
+        JOptionPane.showMessageDialog(viewer, "Book added successfully");
     }
 
     public void updateBook(String isbn, String title, int publicationYear, double price) {
