@@ -48,6 +48,7 @@ public class Viewer extends JPanel{
 
 
         setLayout(null);
+        addMouseListener(controller);
         background = getBackgroundImage();
         font = getFont();
 
@@ -75,6 +76,7 @@ public class Viewer extends JPanel{
         g.setColor(Color.WHITE);
         g.drawString("Welcome to the Online Bookstore Management System", 100, 100);
         g.drawString("Please select an option from the menu", 130, 150);
+        g.drawString("Exit", 350, 500);
     }
 
 
@@ -126,7 +128,7 @@ public class Viewer extends JPanel{
     }
 
     public void showAuthors() {
-        authorsPanel = new AuthorPanel(this);
+        authorsPanel = new AuthorPanel(this, model);
         setVisible(false);
         frame.add(authorsPanel);
     }
@@ -147,18 +149,19 @@ public class Viewer extends JPanel{
         return booksPanel;
     }
 
-    public void showViewer() {
-        if (booksPanel.isVisible()) {
-            booksPanel.setVisible(false);
-        } else if (authorsPanel.isVisible()) {
-            authorsPanel.setVisible(false);
-        } else if (ordersPanel.isVisible()) {
-            ordersPanel.setVisible(false);
-        } else if (customersPanel.isVisible()) {
-            customersPanel.setVisible(false);
-        }
-        setVisible(true);
+    public AuthorPanel getAuthorsPanel() {
+        return authorsPanel;
     }
+
+    public OrdersPanel getOrdersPanel() {
+        return ordersPanel;
+    }
+
+    public CustomerPanel getCustomersPanel() {
+        return customersPanel;
+    }
+
+
 
 
 

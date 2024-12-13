@@ -1,28 +1,19 @@
 import entities.Book;
 
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.GridLayout;
 import java.awt.Image;
-import java.util.ArrayList;
-import java.util.List;
 
 public class BooksPanel extends JPanel {
     private Viewer viewer;
     private Model model;
     private Font font;
     private Image background;
-    private JOptionPane book;
     private JTextField isbnField;
     private JTextField titleField;
     private JTextField publicationYearField;
@@ -34,7 +25,6 @@ public class BooksPanel extends JPanel {
         font = viewer.getFont();
         background = viewer.getBackgroundImage();
         addMouseListener(viewer.getController());
-        book = new JOptionPane();
 
 
         isbnField = new JTextField();
@@ -79,10 +69,14 @@ public class BooksPanel extends JPanel {
                 "Price", priceField
         };
         try {
-            String showInputDialog = JOptionPane.showInputDialog(this, "Enter ISBN of the book to update");
-            JOptionPane.showConfirmDialog(this, fields, "Update book", JOptionPane.OK_CANCEL_OPTION);
+            String isbn = JOptionPane.showInputDialog(this, "Enter ISBN of the book to update");
 
-            model.updateBook(showInputDialog, titleField.getText(), Integer.parseInt(publicationYearField.getText()), Double.parseDouble(priceField.getText()));
+            if (model.isbnExists(isbn)){
+                JOptionPane.showConfirmDialog(this, fields, "Update book", JOptionPane.OK_CANCEL_OPTION);
+                model.updateBook(isbn, titleField.getText(), Integer.parseInt(publicationYearField.getText()), Double.parseDouble(priceField.getText()));
+            } else {
+                JOptionPane.showMessageDialog(this, "Such book does not exist.");
+            }
 
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Please enter a valid number");
@@ -91,8 +85,12 @@ public class BooksPanel extends JPanel {
 
     public void deleteBook() {
         try {
-            String showInputDialog = JOptionPane.showInputDialog(this, "Enter ISBN of the book to delete");
-            model.deleteBook(showInputDialog);
+            String isbn = JOptionPane.showInputDialog(this, "Enter ISBN of the book to delete");
+            if (model.isbnExists(isbn)){
+                model.deleteBook(isbn);
+            } else {
+                JOptionPane.showMessageDialog(this, "Such book does not exist.");
+            }
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Please enter a valid number");
         }
@@ -102,7 +100,6 @@ public class BooksPanel extends JPanel {
         JComboBox<String> books = new JComboBox<>();
         for (Book book : model.showAllBooks()) {
             books.addItem(book.getTitle());
-
         }
         JOptionPane.showConfirmDialog(this, books, "Books", JOptionPane.DEFAULT_OPTION);
     }

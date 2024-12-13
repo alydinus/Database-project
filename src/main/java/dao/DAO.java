@@ -22,7 +22,6 @@ public abstract class DAO {
             String USER = resources.getString("USER");
             String PASSWORD = resources.getString("PASSWORD");
             connection = DriverManager.getConnection(URL, USER, PASSWORD);
-            System.out.println("Database connection established.");
         } catch (MissingResourceException mre) {
             System.err.println(baseName + " resource bundle not found: " + mre.getMessage());
             System.exit(0);

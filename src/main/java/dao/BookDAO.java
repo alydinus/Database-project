@@ -112,4 +112,23 @@ public class BookDAO extends DAO {
             System.err.println("Error while deleting book: " + e.getMessage());
         }
     }
+
+    public boolean isbnExists(String isbn) {
+        try {
+            String sql = "SELECT * FROM book WHERE isbn = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, isbn);
+
+            ResultSet resultSet = statement.executeQuery();
+            boolean exists = resultSet.next();
+
+            resultSet.close();
+            statement.close();
+            return exists;
+
+        } catch (SQLException sqlException) {
+            System.out.println("Book with such isbn doesn't exist.");
+        }
+        return false;
+    }
 }

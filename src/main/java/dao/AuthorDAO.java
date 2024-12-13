@@ -1,14 +1,18 @@
 package dao;
 
+import entities.Author;
+
+import javax.swing.JOptionPane;
 import java.sql.*;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AuthorDAO extends DAO {
     protected Connection connection;
 
     public AuthorDAO() {
         loadResource("application");
+        connection = getConnection();
     }
 
     // Create author
@@ -25,22 +29,23 @@ public class AuthorDAO extends DAO {
     }
 
     // Read author
-    public void readAuthor(int authorId) {
-        String query = "SELECT * FROM Author WHERE AuthorID = ?";
+    public List<Author> showAuthors() {
+        List<Author> authors = new ArrayList<>();
+        String query = "SELECT * FROM Author";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, authorId);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                System.out.println("Author Details:");
-                System.out.println("ID: " + resultSet.getInt("AuthorID"));
-                System.out.println("Name: " + resultSet.getString("Name"));
-                System.out.println("Surname: " + resultSet.getString("Surname"));
-            } else {
-                System.out.println("Author not found.");
+            while (resultSet.next()) {
+                Author author = new Author(
+                        resultSet.getInt("AuthorID"),
+                        resultSet.getString("Name"),
+                        resultSet.getString("Surname")
+                );
+                authors.add(author);
             }
         } catch (SQLException sqle) {
             System.err.println("Error reading author: " + sqle.getMessage());
         }
+        return authors;
     }
 
     // Update author
@@ -77,8 +82,20 @@ public class AuthorDAO extends DAO {
         }
     }
 
-    // Get the current connection (optional utility)
-    public Connection getConnection() {
-        return connection;
+
+    public boolean idExists(int id) {
+        try {
+            String sql = "SELECT * FROM author WHERE authorid = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, id);
+
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return true;
+            }
+        } catch (SQLException sqlException) {
+            JOptionPane.showMessageDialog(null, "Such author does not exists.");
+        }
+        return false;
     }
 }

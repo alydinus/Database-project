@@ -5,6 +5,12 @@ public class Author {
     private String name;
     private String surname;
 
+    public Author(int authorID, String name, String surname) {
+        this.authorID = authorID;
+        this.name = name;
+        this.surname = surname;
+    }
+
     // Getters and Setters
     public int getAuthorID() {
         return authorID;
