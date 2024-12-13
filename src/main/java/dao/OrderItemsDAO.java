@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class OrderItemsDAO extends AuthorDAO {
+public class OrderItemsDAO extends DAO {
+    protected Connection connection;
+
 
     public OrderItemsDAO() {
         loadResource("application");

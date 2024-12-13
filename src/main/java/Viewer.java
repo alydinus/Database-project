@@ -1,128 +1,144 @@
-import javax.swing.*;
-import java.awt.*;
+import javax.imageio.ImageIO;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.ResourceBundle;
 
-public class Viewer {
-    private Model model;
-    private JPanel login;
-    private Admin admin;
+public class Viewer extends JPanel{
+    private Font font;
+
+    private ResourceBundle resourceBundle;
+    private Connection connection;
+    private Image background;
     private Controller controller;
     private JFrame frame;
-    private Register register;
+    private BooksPanel booksPanel;
+    private AuthorPanel authorsPanel;
+    private OrdersPanel ordersPanel;
+    private CustomerPanel customersPanel;
 
-    // Book-related fields
-    private JTextField bookIsbnField;
-    private JTextField bookTitleField;
-    private JTextField bookYearField;
-    private JTextField bookPriceField;
-
-    // Author-related fields
-    private JTextField authorIdField;
-    private JTextField authorFirstNameField;
-    private JTextField authorLastNameField;
-
-    // Customer-related fields
-    private JTextField customerIdField;
-    private JTextField customerNameField;
-    private JTextField customerAddressField;
+    private JComboBox<String> options;
+    private JButton chooseButton;
 
     public Viewer() {
+        loadResources();
         controller = new Controller(this);
-        model = controller.getModel();
-        login = new Login(this);
-        register = new Register(this);
-        admin = new Admin(this, model);
 
-        // Initializing the fields
-        bookIsbnField = new JTextField(20);
-        bookTitleField = new JTextField(20);
-        bookYearField = new JTextField(4);
-        bookPriceField = new JTextField(8);
+        font = new Font("Arial", Font.BOLD, 25);
 
-        authorIdField = new JTextField(10);
-        authorFirstNameField = new JTextField(20);
-        authorLastNameField = new JTextField(20);
 
-        customerIdField = new JTextField(10);
-        customerNameField = new JTextField(30);
-        customerAddressField = new JTextField(50);
-
-        frame = new JFrame("Book Store Management System");
+        frame = new JFrame("Online Bookstore Management System");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
         frame.setLocationRelativeTo(null);
 
-        frame.add(login);
+
+
+        setLayout(null);
+        background = getBackgroundImage();
+        font = getFont();
+
+
+        String[] optionsArray = {"Books", "Orders", "Authors", "Customer"};
+        options = new JComboBox<>(optionsArray);
+        options.setBounds(300, 200, 200, 30);
+
+        chooseButton = new JButton("Choose");
+        chooseButton.setBounds(350, 250, 100, 30);
+        chooseButton.addActionListener(controller);
+        chooseButton.setActionCommand("choose");
+        chooseButton.setFocusable(false);
+
+        add(chooseButton);
+        add(options);
+        frame.add(this);
         frame.setVisible(true);
     }
 
-    public Login getLogin() {
-        return (Login) login;
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(background, 0, 0, 800, 600, this);
+        g.setFont(font);
+        g.setColor(Color.WHITE);
+        g.drawString("Welcome to the Online Bookstore Management System", 100, 100);
+        g.drawString("Please select an option from the menu", 130, 150);
     }
 
-    public Register getRegister() {
-        return register;
+
+    public void loadResources() {
+        resourceBundle = ResourceBundle.getBundle("application");
+        try {
+            String USER = resourceBundle.getString("USER");
+            String PASSWORD = resourceBundle.getString("PASSWORD");
+            String URL = resourceBundle.getString("URL");
+            connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        } catch (SQLException sqlException) {
+            System.out.println("Error: " + sqlException.getMessage());
+        }
     }
 
-    public Admin getAdmin() {
-        return admin;
+    public Image getBackgroundImage() {
+        try {
+            java.net.URL resource = getClass().getResource("images/background.png");
+            if (resource != null) {
+                background = ImageIO.read(resource);
+                return background;
+            } else {
+                System.out.println("Resource not found: " + "images/background.png");
+                return null;
+            }
+        } catch (IOException e) {
+            System.out.println("Error: " + e.getMessage());
+            return null;
+        }
+    }
+
+
+    public Font getFont() {
+        return font;
+    }
+
+    public String getSelectedOption() {
+        return (String) options.getSelectedItem();
     }
 
     public Controller getController() {
         return controller;
     }
-    public void showRegister() {
-        login.setVisible(false);
-        login.setFocusable(false);
-        register.setVisible(true);
-        frame.add(register);
+
+    public void showBooks() {
+        booksPanel = new BooksPanel(this);
+        setVisible(false);
+        frame.add(booksPanel);
     }
 
-    public void showAdminPanel() {
-        admin = new Admin(this, model);
-        login.setVisible(false);
-        login.setFocusable(false);
-        frame.add(admin);
-    }
-    // Book-related getters
-
-    public JTextField getBookIsbnField() {
-        return bookIsbnField;
+    public void showAuthors() {
+        authorsPanel = new AuthorPanel(this);
+        setVisible(false);
+        frame.add(authorsPanel);
     }
 
-    public JTextField getBookTitleField() {
-        return bookTitleField;
+    public void showOrders() {
+        ordersPanel = new OrdersPanel(this);
+        setVisible(false);
+        frame.add(ordersPanel);
     }
 
-    public JTextField getBookYearField() {
-        return bookYearField;
+    public void showCustomers() {
+        customersPanel = new CustomerPanel(this);
+        setVisible(false);
+        frame.add(customersPanel);
     }
 
-    public JTextField getBookPriceField() {
-        return bookPriceField;
-    }
-    // Author-related getters
 
-    public JTextField getAuthorIdField() {
-        return authorIdField;
-    }
 
-    public JTextField getAuthorFirstNameField() {
-        return authorFirstNameField;
-    }
-
-    public JTextField getAuthorLastNameField() {
-        return authorLastNameField;
-    }
-    // Customer-related getters
-
-    public JTextField getCustomerIdField() {
-        return customerIdField;
-    }
-
-    public JTextField getCustomerNameField() {
-        return customerNameField;
-    }
-    public JTextField getCustomerAddressField() {
-        return customerAddressField;
-    }
 }

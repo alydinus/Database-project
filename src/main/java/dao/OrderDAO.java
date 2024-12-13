@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class OrderDAO extends AuthorDAO {
+public class OrderDAO extends DAO {
 
     protected Connection connection;
 

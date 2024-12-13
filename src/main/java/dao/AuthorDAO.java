@@ -4,41 +4,11 @@ import java.sql.*;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-public class AuthorDAO {
-    protected ResourceBundle resources;
+public class AuthorDAO extends DAO {
     protected Connection connection;
+
     public AuthorDAO() {
         loadResource("application");
-    }
-
-    // Load database connection resources
-    public void loadResource(String baseName) {
-        try {
-            resources = ResourceBundle.getBundle(baseName);
-            String URL = resources.getString("URL");
-            String USER = resources.getString("USER");
-            String PASSWORD = resources.getString("PASSWORD");
-            connection = DriverManager.getConnection(URL, USER, PASSWORD);
-            System.out.println("Database connection established.");
-        } catch (MissingResourceException mre) {
-            System.err.println(baseName + " resource bundle not found: " + mre.getMessage());
-            System.exit(0);
-        } catch (SQLException sqle) {
-            System.err.println("Database connection error: " + sqle.getMessage());
-            System.exit(0);
-        }
-    }
-
-    // Close the database connection
-    public void closeConnection() {
-        if (connection != null) {
-            try {
-                connection.close();
-                System.out.println("Database connection closed.");
-            } catch (SQLException sqle) {
-                System.err.println("Error closing database connection: " + sqle.getMessage());
-            }
-        }
     }
 
     // Create author

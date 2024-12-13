@@ -1,0 +1,12 @@
+Appereance
+
+Admin - человек который может выполнять crud операции для новых книг, авторов и заказов.
+он может увидеть List customers who made more than one purchase, Retrieve customers with the highest total purchase amount.Identify books with low stock. Retrieve the latest orders placed.Calculate total revenue.Identify customers who have not made a purchase.
+
+
+Customer- человек, который также может выполнять crud операции но для себя. 
+Также Retrieve a list of books with their authors.Find the total sales for a specific book, Find the top N best-selling books.Identify authors with the highest total sales.
+
+
+Login window has been created. Authentification has been added to the project
+
