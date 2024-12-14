@@ -134,7 +134,7 @@ public class Viewer extends JPanel{
     }
 
     public void showOrders() {
-        ordersPanel = new OrdersPanel(this);
+        ordersPanel = new OrdersPanel(this, model);
         setVisible(false);
         frame.add(ordersPanel);
     }

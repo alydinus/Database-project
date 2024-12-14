@@ -1,6 +1,7 @@
 import dao.*;
 import entities.Author;
 import entities.Book;
+import entities.OrderItem;
 
 import javax.swing.JOptionPane;
 import java.util.List;
@@ -68,6 +69,29 @@ public class Model {
     public List<Author> showAllAuthors() {
         return authorDAO.showAuthors();
     }
+
+    public void createOrderItem(String isbn, int quantity) {
+        orderItemsDAO.createOrderItem(isbn, quantity);
+    }
+
+    public void updateOrderItem(int orderId, String isbn, int quantity) {
+        orderItemsDAO.updateOrderItem(orderId, isbn, quantity);
+        JOptionPane.showMessageDialog(viewer, "Order item updated successfully");
+    }
+
+    public void deleteOrderItem(int orderId) {
+        orderItemsDAO.deleteOrderItem(orderId);
+    }
+
+    public List<OrderItem> showOrderItems() {
+        return orderItemsDAO.readOrderItems();
+    }
+
+    public boolean orderExists(int id) {
+        return orderItemsDAO.exists(id);
+    }
+
+
 
     public void exit() {
         System.exit(0);

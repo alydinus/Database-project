@@ -1,9 +1,14 @@
 package dao;
 
+import entities.OrderItem;
+
+import javax.swing.JOptionPane;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OrderItemsDAO extends DAO {
     protected Connection connection;
@@ -11,36 +16,36 @@ public class OrderItemsDAO extends DAO {
 
     public OrderItemsDAO() {
         loadResource("application");
+        connection = getConnection();
     }
 
     // Create an order item
-    public void createOrderItem(int orderId, String bookIsbn, int quantity) {
-        String sql = "INSERT INTO Order_Items (OrderID, BookISBN, Quantity) VALUES (?, ?, ?)";
+    public void createOrderItem(String bookIsbn, int quantity) {
+        String sql = "INSERT INTO order_items (BookISBN, Quantity) VALUES (?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, orderId);
-            stmt.setString(2, bookIsbn);
-            stmt.setInt(3, quantity);
+            stmt.setString(1, bookIsbn);
+            stmt.setInt(2, quantity);
             stmt.executeUpdate();
-            System.out.println("Order Item added successfully.");
+            JOptionPane.showMessageDialog(null, "Order item added successfully");
         } catch (SQLException e) {
-            System.err.println("Error while adding order item: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Such book does not exist");
         }
     }
 
     // Read order items by order ID
-    public void readOrderItems(int orderId) {
-        String sql = "SELECT * FROM Order_Items WHERE OrderID = ?";
+    public List<OrderItem> readOrderItems() {
+        List<OrderItem> orderItems = new ArrayList<>();
+        String sql = "SELECT * FROM Order_Items";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, orderId);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                System.out.println("Order ID: " + rs.getInt("OrderID"));
-                System.out.println("Book ISBN: " + rs.getString("BookISBN"));
-                System.out.println("Quantity: " + rs.getInt("Quantity"));
+                OrderItem orderItem = new OrderItem(rs.getInt("OrderID"), rs.getString("BookISBN"), rs.getInt("Quantity"));
+                orderItems.add(orderItem);
             }
         } catch (SQLException e) {
             System.err.println("Error while reading order items: " + e.getMessage());
         }
+        return orderItems;
     }
 
     // Update an order item by order ID and book ISBN
@@ -62,19 +67,30 @@ public class OrderItemsDAO extends DAO {
     }
 
     // Delete an order item by order ID and book ISBN
-    public void deleteOrderItem(int orderId, String bookIsbn) {
-        String sql = "DELETE FROM Order_Items WHERE OrderID = ? AND BookISBN = ?";
+    public void deleteOrderItem(int orderId) {
+        String sql = "DELETE FROM order_items WHERE OrderID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, orderId);
-            stmt.setString(2, bookIsbn);
             int rowsDeleted = stmt.executeUpdate();
             if (rowsDeleted > 0) {
-                System.out.println("Order Item deleted successfully.");
+                JOptionPane.showMessageDialog(null, "Order item deleted successfully");
             } else {
-                System.out.println("Order Item not found.");
+                JOptionPane.showMessageDialog(null, "Order item not found");
             }
         } catch (SQLException e) {
-            System.err.println("Error while deleting order item: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Such order does not exist");
+        }
+    }
+
+    public boolean exists(int id) {
+        String sql = "SELECT * FROM order_items WHERE OrderID = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            System.err.println("Error while checking if order exists: " + e.getMessage());
+            return false;
         }
     }
 }

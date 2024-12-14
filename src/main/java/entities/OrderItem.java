@@ -5,6 +5,12 @@ public class OrderItem {
     private String bookISBN;
     private int quantity;
 
+    public OrderItem(int orderID, String bookISBN, int quantity) {
+        this.orderID = orderID;
+        this.bookISBN = bookISBN;
+        this.quantity = quantity;
+    }
+
     // Getters and Setters
     public int getOrderID() {
         return orderID;
