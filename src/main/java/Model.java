@@ -1,6 +1,7 @@
 import dao.*;
 import entities.Author;
 import entities.Book;
+import entities.Customer;
 import entities.OrderItem;
 
 import javax.swing.JOptionPane;
@@ -93,9 +94,35 @@ public class Model {
 
 
 
+
+
+    public void createCustomer(String name, String address) {
+        customerDAO.createCustomer(name,address);
+        JOptionPane.showMessageDialog(viewer, "Customer added successfully");
+    }
+
+    public void updateCustomer(int customerId, String name, String address) {
+        customerDAO.updateCustomer(customerId, name,address);
+        JOptionPane.showMessageDialog(viewer, "Customer updated successfully");
+    }
+
+    public boolean customerExists(int id) {
+        return customerDAO.idExists(id);
+    }
+
+    public void deleteCustomer(int id) {
+        customerDAO.deleteCustomer(id);
+        JOptionPane.showMessageDialog(viewer, "Customer deleted successfully");
+    }
+
+    public List<Customer> showAllCustomers() {
+        return customerDAO.readCustomers();
+    }
+
     public void exit() {
         System.exit(0);
     }
+
 
 
 

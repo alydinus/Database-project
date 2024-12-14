@@ -56,6 +56,18 @@ public class Controller extends MouseAdapter implements ActionListener {
             }
 
         } else if (viewer.getSelectedOption().equals("Customers")) {
+            if (e.getX() >= 100 && e.getX() <= 200 && e.getY() >= 100 && e.getY() < 150) {
+                viewer.getCustomersPanel().createCustomer();
+            } else if(e.getX() >= 100 && e.getX() <= 200 && e.getY() >= 150 && e.getY() < 200) {
+                viewer.getCustomersPanel().deleteCustomer();
+            } else if(e.getX() >= 100 && e.getX() <= 200 && e.getY() >= 200 && e.getY() < 250) {
+                viewer.getCustomersPanel().updateCustomer();
+            } else if(e.getX() >= 100 && e.getX() <= 200 && e.getY() >= 250 && e.getY() < 300) {
+                viewer.getCustomersPanel().viewCustomers();
+            } else if(e.getX() >= 50 && e.getX() <= 100 && e.getY() >= 450 && e.getY() < 550) {
+                viewer.getCustomersPanel().back();
+            }
+
 
 
         } else if (viewer.getSelectedOption().equals("Orders")) {

@@ -140,7 +140,7 @@ public class Viewer extends JPanel{
     }
 
     public void showCustomers() {
-        customersPanel = new CustomerPanel(this);
+        customersPanel = new CustomerPanel(this, model);
         setVisible(false);
         frame.add(customersPanel);
     }
