@@ -43,6 +43,7 @@ public class BooksPanel extends JPanel {
         g.drawString("Delete book", 100, 200);
         g.drawString("Update book", 100, 250);
         g.drawString("View books", 100, 300);
+        g.drawString("Retrieve a list of books with their authors.", 100, 350);
         g.drawString("Back", 50, 500);
     }
 
